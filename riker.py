@@ -31,7 +31,6 @@ def cleanup(file_path):
                 else:
                     print(str(entry.name))
                     return
-        print("yes")
         for entry in file_path.iterdir():
             if len(os.listdir()) == 0:
                 entry.rmdir()
@@ -76,6 +75,11 @@ class MusicHandler(PatternMatchingEventHandler):
         track = str(mp3_file.tag.track_num[0]).zfill(
             len(str(mp3_file.tag.track_num[1]))
         )
+        if mp3_file.tag.disc_num[1] != 1:
+            disc_num = str(mp3_file.tag.disc_num[0]).zfill(
+                len(str(mp3_file.tag.disc_num[1]))
+            )
+            track = f"{disc_num}-{track}"
         title = clean_text(mp3_file.tag.title[:40])
         filename = "{} {}.mp3".format(track, title)
         dest = Path(MUSIC_FOLDER, artist, album, filename)
